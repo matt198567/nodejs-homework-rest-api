@@ -4,15 +4,16 @@ const getContacts = async (id, page, limit, favorite) => {
   try {
     if (favorite) {
       const data = await Contact.find({ favorite: true }).populate(
+        "owner",
         "_id email subscription"
       );
       return data;
     } else {
       const skip = (page - 1) * limit;
-      const data = await Contact.find({ id }, "", {
+      const data = await Contact.find({ owner: id }, "", {
         skip,
         limit: +limit,
-      }).populate("_id email subscription");
+      }).populate("owner", "_id email subscription");
       return data;
     }
   } catch (error) {
