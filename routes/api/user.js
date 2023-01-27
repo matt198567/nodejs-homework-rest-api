@@ -19,6 +19,7 @@ const { upload } = require("./middleware/upload");
 const { validation } = require("./middleware/validationBody");
 
 const router = express.Router();
+const { verify, reverify } = require("../controllers/verification");
 
 router.patch("/avatars", checkToken, upload.single("avatar"), avatarCtrl);
 
@@ -27,5 +28,8 @@ router.patch("/", checkToken, userStatusCtrl);
 router.post("/register", validation(registertSchema), registerCtrl);
 router.get("/login", validation(loginSchema), loginCtrl);
 router.post("/logout", checkToken, logoutCtrl);
+
+router.get("/verify/:verificationToken", verify);
+router.post("/verify", reverify);
 
 module.exports = router;
